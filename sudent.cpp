@@ -1,51 +1,58 @@
-#include <iostream>
-#include <string>
-#include <Windows.h>
+#include <iostream> // Подключение библиотеки для ввода/вывода
+#include <string>   // Подключение библиотеки для работы со строками
+#include <Windows.h> // Подключение библиотеки Windows для настройки кодировки консоли
 
-using namespace std;
+using namespace std; // Использование стандартного пространства имён
 
+// Структура для хранения данных о студенте
 struct Student
 {
-    string name;
-    string surname;
-    int age;
+    string name;     // Имя студента
+    string surname;  // Фамилия студента
+    int age;         // Возраст студента
 };
 
+// Указатель на массив студентов
 Student* students = nullptr;
+// Количество студентов
 int studentCount = 0;
 
+// Функция отображения меню
 void showMenu()
 {
-    cout << "\n       === Меню ===\n";
-    cout << "1. Показать всех студентов\n";
-    cout << "2. Добавить студента\n";
-    cout << "3. Изменить студента\n";
-    cout << "4. Удалить студента\n";
-    cout << "0. Выход\n";
-    cout << "Выберите пункт: ";
+    cout << "\n       === Меню ===\n"; // Заголовок меню
+    cout << "1. Показать всех студентов\n"; // Пункт меню: показать студентов
+    cout << "2. Добавить студента\n";       // Пункт меню: добавить студента
+    cout << "3. Изменить студента\n";       // Пункт меню: изменить студента
+    cout << "4. Удалить студента\n";        // Пункт меню: удалить студента
+    cout << "0. Выход\n";                   // Пункт меню: выход из программы
+    cout << "Выберите пункт: ";             // Запрос выбора пункта
 }
 
+// Функция отображения списка студентов
 void showStudents()
 {
-	if (studentCount == 0)
-	{
-		cout << "Student list empty." << endl;
-		return;
-	}
-	for (int i = 0; i < studentCount; i++)
-	{
-		cout << i + 1 << ". " << students[i].name << " " << students[i].surname << ", age: " << students[i].age << endl;
-	}
+    if (studentCount == 0) // Проверка, есть ли студенты
+    {
+        cout << "Student list empty." << endl; // Сообщение, если список пуст
+        return;
+    }
+    for (int i = 0; i < studentCount; i++) // Перебор всех студентов
+    {
+        // Вывод информации о каждом студенте
+        cout << i + 1 << ". " << students[i].name << " " << students[i].surname << ", age: " << students[i].age << endl;
+    }
 }
 
+// Функция добавления студента
 void addStudent()
 {
-    Student s;
-    cout << "Введите имя: ";
+    Student s; // Новый студент
+    cout << "Введите имя: "; // Запрос имени
     cin >> s.name;
-    cout << "Введите фамилию: ";
+    cout << "Введите фамилию: "; // Запрос фамилии
     cin >> s.surname;
-    cout << "Введите возраст: ";
+    cout << "Введите возраст: "; // Запрос возраста
     cin >> s.age;
 
     // Создаем новый массив с размером на 1 больше
@@ -53,102 +60,106 @@ void addStudent()
     // Копируем старые данные
     for (int i = 0; i < studentCount; i++)
         temp[i] = students[i];
-    temp[studentCount] = s;
-    delete[] students;
-    students = temp;
-    studentCount++;
+    temp[studentCount] = s; // Добавляем нового студента
+    delete[] students; // Удаляем старый массив
+    students = temp;   // Переназначаем указатель
+    studentCount++;    // Увеличиваем счётчик студентов
 
-    cout << "Студент добавлен.\n";
+    cout << "Студент добавлен.\n"; // Сообщение об успешном добавлении
 }
 
+// Функция изменения данных студента
 void changeStudent()
 {
-    if (studentCount == 0)
+    if (studentCount == 0) // Проверка наличия студентов
     {
         cout << "Нет студентов для изменения.\n";
         return;
     }
-    showStudents();
-    cout << "Введите номер студента для изменения: ";
+    showStudents(); // Показываем список студентов
+    cout << "Введите номер студента для изменения: "; // Запрос номера студента
     int index;
     cin >> index;
-    if (index <= 0 || index > studentCount)
+    if (index <= 0 || index > studentCount) // Проверка корректности номера
     {
         cout << "Неправильный номер.\n";
         return;
     }
-    index--;
-    cout << "Введите новое имя: ";
+    index--; // Преобразование в индекс массива
+    cout << "Введите новое имя: "; // Запрос нового имени
     cin >> students[index].name;
-    cout << "Введите новую фамилию: ";
+    cout << "Введите новую фамилию: "; // Запрос новой фамилии
     cin >> students[index].surname;
-    cout << "Введите новый возраст: ";
+    cout << "Введите новый возраст: "; // Запрос нового возраста
     cin >> students[index].age;
 
-    cout << "Данные студента обновлены.\n";
+    cout << "Данные студента обновлены.\n"; // Сообщение об успешном обновлении
 }
 
+// Функция удаления студента
 void deleteStudent()
 {
-    if (studentCount == 0)
+    if (studentCount == 0) // Проверка наличия студентов
     {
         cout << "Нет студентов для удаления.\n";
         return;
     }
-    showStudents();
-    cout << "Введите номер студента для удаления: ";
+    showStudents(); // Показываем список студентов
+    cout << "Введите номер студента для удаления: "; // Запрос номера студента
     int index;
     cin >> index;
-    if (index <= 0 || index > studentCount)
+    if (index <= 0 || index > studentCount) // Проверка корректности номера
     {
         cout << "Неправильный номер.\n";
         return;
     }
-    index--;
+    index--; // Преобразование в индекс массива
 
+    // Создаем новый массив без удаляемого студента
     Student* temp = new Student[studentCount - 1];
     for (int i = 0, j = 0; i < studentCount; i++)
     {
-        if (i == index) continue; // пропускаем удаляемый элемент
-        temp[j++] = students[i];
+        if (i == index) continue; // Пропускаем удаляемого студента
+        temp[j++] = students[i];  // Копируем остальных
     }
-    delete[] students;
-    students = temp;
-    studentCount--;
+    delete[] students; // Удаляем старый массив
+    students = temp;   // Переназначаем указатель
+    studentCount--;    // Уменьшаем счётчик студентов
 
-    cout << "Студент удалён.\n";
+    cout << "Студент удалён.\n"; // Сообщение об успешном удалении
 }
 
+// Главная функция программы
 int main()
 {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251); // Установка кодировки ввода (кириллица)
+    SetConsoleOutputCP(1251); // Установка кодировки вывода (кириллица)
 
-	while (true)
-	{
-		showMenu();
-		int choice;
-		cin >> choice;
-		switch (choice)
-		{
-		case 1:
-			showStudents();
-			break;
-		case 2:
-			addStudent();
-			break;
-		case 3:
-			changeStudent();
-			break;
-		case 4:
-			deleteStudent();
-			break;
-		case 0:
-			delete[] students; // Очистка памяти перед выходом
-			cout << "Выход.\n";
-			return 0;
-		default:
-			cout << "Неверный выбор, попробуйте ещё раз.\n";
-		}
-	}
+    while (true) // Бесконечный цикл работы меню
+    {
+        showMenu(); // Показываем меню
+        int choice;
+        cin >> choice; // Считываем выбор пользователя
+        switch (choice) // Обработка выбора
+        {
+        case 1:
+            showStudents(); // Показать студентов
+            break;
+        case 2:
+            addStudent(); // Добавить студента
+            break;
+        case 3:
+            changeStudent(); // Изменить студента
+            break;
+        case 4:
+            deleteStudent(); // Удалить студента
+            break;
+        case 0:
+            delete[] students; // Очистка памяти перед выходом
+            cout << "Выход.\n"; // Сообщение о выходе
+            return 0; // Завершение программы
+        default:
+            cout << "Неверный выбор, попробуйте ещё раз.\n"; // Обработка неверного ввода
+        }
+    }
 }
